@@ -1,65 +1,85 @@
 package controller;
 
-
-
-
+import dto.Book;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
+import service.ServiceFactory;
+import service.custom.BookService;
+import util.ServiceType;
 
 public class BookFormController {
 
     @FXML
-    private TableColumn<?, ?> colAddress;
+    private TableColumn colGenre;
 
     @FXML
-    private TableColumn<?, ?> colId;
+    private TableColumn colISBN;
 
     @FXML
-    private TableColumn<?, ?> colName;
+    private TableColumn colId;
 
     @FXML
-    private TableColumn<?, ?> colSalary;
+    private TableColumn colStatus;
 
     @FXML
-    private TableView<?> tblCustomer;
+    private TableColumn colTitle;
 
     @FXML
-    private TextField txtAddress;
+    private TableView tbIBooks;
+
+    @FXML
+    private TextField txtAuthor;
+
+    @FXML
+    private TextField txtGenre;
+
+    @FXML
+    private TextField txtISBN;
+
+    @FXML
+    private TextField txtStatus;
+
+    @FXML
+    private TextField txtTitle;
 
     @FXML
     private TextField txtId;
 
-    @FXML
-    private TextField txtName;
+    BookService service = ServiceFactory.getInstance().getServiceType(ServiceType.BOOK);
 
     @FXML
-    private TextField txtSalary;
+    void btnAddBookOnAction(ActionEvent event) {
+        String txtIdText = txtId.getText();
+        String txtISBNText = txtISBN.getText();
+        String txtTitleText = txtTitle.getText();
+        String txtAuthorText = txtAuthor.getText();
+        String txtGenreText = txtGenre.getText();
 
-    @FXML
-    void btnAddAction(ActionEvent event) {
+        Book book = new Book(txtIdText, txtISBNText, txtTitleText, txtAuthorText, txtGenreText);
+        service.addBook(book);
 
     }
 
     @FXML
-    void btnDeleteAction(ActionEvent event) {
+    void btnDeleteBookOnAction(ActionEvent event) {
 
     }
 
     @FXML
-    void btnReloadAction(ActionEvent event) {
+    void btnReloadBooksOnAction(ActionEvent event) {
 
     }
 
     @FXML
-    void btnSearchAction(ActionEvent event) {
+    void btnSearchBookOnAction(ActionEvent event) {
 
     }
 
     @FXML
-    void btnUpdateAction(ActionEvent event) {
+    void btnUpdateBookOnAction(ActionEvent event) {
 
     }
 

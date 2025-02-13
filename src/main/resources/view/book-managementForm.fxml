@@ -9,72 +9,47 @@
 <?import javafx.scene.shape.Rectangle?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane prefHeight="481.0" prefWidth="745.0" style="-fx-background-color: #AEB8FE;" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.customer.CustomerFormController">
+<AnchorPane prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.BookFormController">
     <children>
-        <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#08213d" height="66.0" layoutX="-2.0" stroke="BLACK" strokeType="INSIDE" width="751.0" />
-        <Label layoutX="73.0" layoutY="6.0" prefHeight="54.0" prefWidth="658.0" text="Book Management Form Controller" textFill="WHITE">
-            <font>
-                <Font name="System Bold" size="36.0" />
-            </font>
-        </Label>
-        <TextField fx:id="txtISBN" layoutX="17.0" layoutY="241.0" prefHeight="34.0" prefWidth="188.0" promptText="Salary" style="-fx-border-color: #D1D1D1;" text="ISBN">
-            <font>
-                <Font size="14.0" />
-            </font></TextField>
-        <TextField fx:id="txtTitle" layoutX="17.0" layoutY="155.0" prefHeight="34.0" prefWidth="188.0" promptText="Address" style="-fx-border-color: #D1D1D1;" text="Title">
-            <font>
-                <Font size="14.0" />
-            </font></TextField>
-        <TextField fx:id="txtAuthor" layoutX="17.0" layoutY="198.0" prefHeight="34.0" prefWidth="188.0" promptText="Name" style="-fx-border-color: #D1D1D1;" text="Author">
-            <font>
-                <Font size="14.0" />
-            </font></TextField>
-        <TableView fx:id="tblCustomer" layoutX="223.0" layoutY="113.0" prefHeight="250.0" prefWidth="512.0" style="-fx-background-color: white;">
-            <columns>
-                <TableColumn fx:id="colId" prefWidth="85.59996032714844" text="Id" />
-                <TableColumn fx:id="colName" prefWidth="146.4000244140625" text="Name" />
-                <TableColumn fx:id="colAddress" prefWidth="163.199951171875" text="Address" />
-                <TableColumn fx:id="colSalary" prefWidth="136.0" text="Salary" />
-            </columns>
-        </TableView>
-        <Button layoutX="117.0" layoutY="385.0" mnemonicParsing="false" onAction="#btnSearchAction" prefHeight="26.0" prefWidth="90.0" style="-fx-background-color: #FF8600;" text="Search" textFill="#180101">
-            <font>
-                <Font name="System Bold Italic" size="13.0" />
-            </font>
-        </Button>
-        <Button layoutX="12.0" layoutY="425.0" mnemonicParsing="false" onAction="#btnUpdateAction" prefHeight="26.0" prefWidth="89.0" style="-fx-background-color: #FF8600;" text="Update" textFill="#0d1b0f">
-            <font>
-                <Font name="System Bold Italic" size="13.0" />
-            </font>
-        </Button>
-        <Button layoutX="11.0" layoutY="385.0" mnemonicParsing="false" onAction="#btnAddAction" prefHeight="27.0" prefWidth="90.0" style="-fx-background-color: #FF8600;" text="Add" textFill="#2e1414">
-            <font>
-                <Font name="System Bold Italic" size="13.0" />
-            </font>
-        </Button>
-        <Button layoutX="117.0" layoutY="425.0" mnemonicParsing="false" onAction="#btnDeleteAction" prefHeight="26.0" prefWidth="90.0" style="-fx-background-color: #FF8600;" text="Delete" textFill="#081007">
-            <font>
-                <Font name="System Bold Italic" size="13.0" />
-            </font>
-        </Button>
-        <Button layoutX="640.0" layoutY="425.0" mnemonicParsing="false" onAction="#btnReloadAction" prefHeight="26.0" prefWidth="90.0" style="-fx-background-color: #08213d;" text="Reload" textFill="WHITE">
+        <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#135b9e" height="66.0" layoutY="-2.0" stroke="BLACK" strokeType="INSIDE" width="600.0" />
+        <TextField fx:id="txtId" layoutX="109.0" layoutY="82.0" promptText="Id" />
+        <TextField fx:id="txtISBN" layoutX="267.0" layoutY="82.0" promptText="ISBN" />
+        <TextField fx:id="txtAuthor" layoutX="104.0" layoutY="124.0" promptText="Author" />
+        <TextField fx:id="txtGenre" layoutX="262.0" layoutY="124.0" promptText="Genre" />
+        <Button layoutX="167.0" layoutY="166.0" mnemonicParsing="false" onAction="#btnAddBookOnAction" prefHeight="25.0" prefWidth="59.0" style="-fx-background-color: #28a745;" text="Add" textFill="WHITE">
             <font>
                 <Font name="System Bold" size="12.0" />
             </font></Button>
-      <TextField fx:id="txtAvailability" layoutX="17.0" layoutY="329.0" prefHeight="34.0" prefWidth="188.0" promptText="ID" style="-fx-border-color: #D1D1D1; -fx-background-color: #FFFFFF;" text="Availability">
-         <font>
-            <Font size="14.0" />
-         </font>
-      </TextField>
-      <TextField fx:id="ttGenry" layoutX="17.0" layoutY="286.0" prefHeight="34.0" prefWidth="188.0" promptText="ID" style="-fx-border-color: #D1D1D1; -fx-background-color: #FFFFFF;" text="Genry">
-         <font>
-            <Font size="14.0" />
-         </font>
-      </TextField>
-      <TextField fx:id="txtId" layoutX="17.0" layoutY="113.0" prefHeight="34.0" prefWidth="188.0" promptText="Address" style="-fx-border-color: #D1D1D1;" text="ID">
-         <font>
-            <Font size="14.0" />
-         </font>
-      </TextField>
+        <TableView fx:id="tbIBooks" layoutX="54.0" layoutY="206.0" prefHeight="145.0" prefWidth="493.0">
+            <columns>
+                <TableColumn fx:id="colId" prefWidth="48.0" text="Id" />
+                <TableColumn fx:id="colISBN" prefWidth="123.0" text="ISBN" />
+                <TableColumn fx:id="colTitle" prefWidth="135.0" text="Title" />
+                <TableColumn fx:id="colGenre" prefWidth="101.0" text="Genre" />
+                <TableColumn fx:id="colStatus" prefWidth="84.0" text="Status" />
+            </columns>
+        </TableView>
+        <Label layoutX="223.0" layoutY="9.0" text="Item Form" textFill="WHITE">
+            <font>
+                <Font name="System Bold" size="30.0" />
+            </font>
+        </Label>
+        <Button layoutX="236.0" layoutY="166.0" mnemonicParsing="false" onAction="#btnSearchBookOnAction" prefHeight="25.0" prefWidth="59.0" style="-fx-background-color: #007bff;" text="Search" textFill="WHITE">
+            <font>
+                <Font name="System Bold" size="12.0" />
+            </font></Button>
+        <Button layoutX="305.0" layoutY="166.0" mnemonicParsing="false" onAction="#btnUpdateBookOnAction" prefHeight="25.0" prefWidth="59.0" style="-fx-background-color: #fd7e14;" text="Update" textFill="WHITE">
+            <font>
+                <Font name="System Bold" size="12.0" />
+            </font></Button>
+        <Button layoutX="374.0" layoutY="166.0" mnemonicParsing="false" onAction="#btnDeleteBookOnAction" prefHeight="25.0" prefWidth="59.0" style="-fx-background-color: #dc3545;" text="Delete" textFill="WHITE">
+            <font>
+                <Font name="System Bold" size="12.0" />
+            </font></Button>
+        <Button layoutX="488.0" layoutY="361.0" mnemonicParsing="false" onAction="#btnReloadBooksOnAction" prefHeight="25.0" prefWidth="59.0" style="-fx-background-color: #6c757d;" text="Reload" textFill="WHITE">
+            <font>
+                <Font name="System Bold" size="12.0" />
+            </font></Button>
+        <TextField fx:id="txtTitle" layoutX="433.0" layoutY="82.0" promptText="Title" />
     </children>
 </AnchorPane>

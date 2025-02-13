@@ -11,5 +11,5 @@ public class Book {
     private String ISBN;
     private String title;
     private String author;
-    private String availability;
+    private String genry;
 }
