@@ -4,6 +4,7 @@ import com.google.inject.Inject;
 import dto.Book;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.scene.control.Alert;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
@@ -60,14 +61,25 @@ public class BookFormController {
         String txtGenreText = txtGenre.getText();
 
         Book book = new Book(txtIdText, txtISBNText, txtTitleText, txtAuthorText, txtGenreText);
-        service.addBook(book);
+        boolean isAdded = service.addBook(book);
+        System.out.println("isAdded: " + isAdded); // Debugging line
+        if (isAdded) {
+            new Alert(Alert.AlertType.INFORMATION, "Book Added").show();
+        } else {
+            new Alert(Alert.AlertType.ERROR, "Book not Added").show();
+        }
 
 
     }
 
     @FXML
     void btnDeleteBookOnAction(ActionEvent event) {
-
+        boolean isDelete = service.deleteBook(txtId.getText());
+        if (isDelete){
+            new Alert(Alert.AlertType.INFORMATION,"Book Deleted").show();
+        }else {
+            new Alert(Alert.AlertType.ERROR,"Book not Deleted").show();
+        }
     }
 
     @FXML
