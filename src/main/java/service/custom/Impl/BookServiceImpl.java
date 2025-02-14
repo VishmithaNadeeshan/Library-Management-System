@@ -1,5 +1,6 @@
 package service.custom.Impl;
 
+import com.google.inject.Inject;
 import dto.Book;
 import entity.BookEntity;
 import org.modelmapper.ModelMapper;
@@ -12,8 +13,8 @@ import util.DaoType;
 import java.util.List;
 
 public class BookServiceImpl implements BookService {
-
-    BookDao dao = DaoFactory.getInstance().getDaoType(DaoType.BOOK);
+    @Inject
+    BookDao dao;
     @Override
     public boolean addBook(Book book) {
 
