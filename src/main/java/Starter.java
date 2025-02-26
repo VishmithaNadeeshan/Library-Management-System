@@ -10,13 +10,16 @@ public class Starter extends Application {
     public static void run() {
         launch();
     }
+
     @Override
     public void start(Stage stage) throws Exception {
-
         Injector injector = Guice.createInjector(new AppModule());
-        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/view/book-managementForm.fxml"));
+
+        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/view/user-form.fxml"));
         fxmlLoader.setControllerFactory(injector::getInstance);
+
         stage.setScene(new Scene(fxmlLoader.load()));
         stage.show();
     }
+
 }
