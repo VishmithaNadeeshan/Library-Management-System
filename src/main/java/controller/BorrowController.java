@@ -10,10 +10,7 @@ import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
-import javafx.scene.control.DatePicker;
-import javafx.scene.control.Label;
-import javafx.scene.control.TableColumn;
-import javafx.scene.control.TableView;
+import javafx.scene.control.*;
 import service.custom.BookService;
 import service.custom.UserService;
 import service.impl.BookServiceImpl;
@@ -24,6 +21,25 @@ import java.util.List;
 import java.util.ResourceBundle;
 
 public class BorrowController implements Initializable {
+    @FXML
+    private TextField txtTitle;
+    @FXML
+    private TextField txtUserName;
+    @FXML
+    private TextField txtContact;
+    @FXML
+    private TextField txtMembershipDate;
+    @FXML
+    private TextField txtAvailability;
+    @FXML
+    private TextField txtGenre;
+    @FXML
+    private TextField txtAuthor;
+    @FXML
+    private TextField txtName;
+    @FXML
+    private TextField txtIsbn;
+    @FXML
 
     //@Inject
     BookService service = new BookServiceImpl();
@@ -104,9 +120,37 @@ public class BorrowController implements Initializable {
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-        loadBookIds();
 
+        cmbUserId.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
+            if (newValue != null) {
+                searchUserData(newValue.toString());
+            }
+        });
+
+        cmbBookId.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
+            if (newValue != null) {
+                searchBookData(newValue.toString());
+            }
+        });
+
+        loadBookIds();
+        loadUserIds();
 
     }
 
+    public void searchBookData(String id){
+        Book book = service.searchBook(id);
+        txtIsbn.setText(book.getISBN());
+        txtTitle.setText(book.getTitle());
+        txtAuthor.setText(book.getAuthor());
+        txtGenre.setText(book.getGenre());
+        txtAvailability.setText(book.getAvailability());
+    }
+
+    public void searchUserData(String id){
+        User user = UserService.searchUser(id);
+        txtUserName.setText(user.getName());
+        txtContact.setText(user.getContact());
+        txtMembershipDate.setText(user.getDate());
+    }
 }

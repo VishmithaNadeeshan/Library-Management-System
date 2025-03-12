@@ -7,13 +7,14 @@
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.TableColumn?>
 <?import javafx.scene.control.TableView?>
+<?import javafx.scene.control.TextField?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.shape.Rectangle?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane prefHeight="481.0" prefWidth="745.0" style="-fx-background-color: #AEB8FE;" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.BorrowController">
+<AnchorPane prefHeight="481.0" prefWidth="953.0" style="-fx-background-color: #AEB8FE;" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.BorrowController">
     <children>
-        <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#012648" height="75.0" layoutY="-2.0" stroke="BLACK" strokeType="INSIDE" width="745.0" />
+        <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#012648" height="75.0" layoutY="-2.0" stroke="BLACK" strokeType="INSIDE" width="953.0" />
         <Button layoutX="610.0" layoutY="203.0" mnemonicParsing="false" onAction="#AddToCartAction" prefHeight="26.0" prefWidth="88.0" style="-fx-background-color: #1cc43a;" text="Add To Cart">
             <font>
                 <Font name="System Bold Italic" size="12.0" />
@@ -36,7 +37,7 @@
                 <Font name="System Bold" size="12.0" />
             </font></Button>
         <JFXComboBox fx:id="cmbUserId" layoutX="31.0" layoutY="108.0" promptText="User ID" />
-        <JFXComboBox fx:id="cmbBookId" layoutX="31.0" layoutY="158.0" prefHeight="26.0" prefWidth="114.0" promptText="Book ID" />
+        <JFXComboBox fx:id="cmbBookId" layoutX="31.0" layoutY="158.0" prefHeight="26.0" prefWidth="82.0" promptText="Book ID" />
         <Label layoutX="38.0" layoutY="433.0" text="Net Total :" textFill="#c33838">
             <font>
                 <Font name="System Bold" size="12.0" />
@@ -47,8 +48,16 @@
                 <Font name="System Bold" size="12.0" />
             </font>
         </Label>
-        <JFXTextField fx:id="txtBorrowId" layoutX="574.0" layoutY="24.0" promptText="Borrow ID" style="-fx-background-color: white;" unFocusColor="WHITE" />
-      <DatePicker fx:id="borrowedDate" layoutX="197.0" layoutY="108.0" promptText="Borrowed Date" />
-      <DatePicker fx:id="returnedDate" layoutX="410.0" layoutY="108.0" promptText="Returned Date" />
+        <JFXTextField fx:id="txtBorrowId" layoutX="789.0" layoutY="23.0" promptText="Borrow ID" style="-fx-background-color: white;" unFocusColor="WHITE" />
+      <DatePicker fx:id="borrowedDate" layoutX="37.0" layoutY="203.0" promptText="Borrowed Date" />
+      <DatePicker fx:id="returnedDate" layoutX="240.0" layoutY="203.0" promptText="Returned Date" />
+      <TextField fx:id="txtUserName" disable="true" layoutX="137.0" layoutY="108.0" promptText="Name" />
+      <TextField fx:id="txtContact" disable="true" layoutX="298.0" layoutY="108.0" promptText="Contact" />
+      <TextField fx:id="txtMembershipDate" disable="true" layoutX="460.0" layoutY="108.0" promptText="Membership Date" />
+      <TextField fx:id="txtAvailability" layoutX="789.0" layoutY="158.0" promptText="Availability" />
+      <TextField fx:id="txtGenre" disable="true" layoutX="626.0" layoutY="158.0" promptText="Genre" />
+      <TextField fx:id="txtAuthor" disable="true" layoutX="460.0" layoutY="158.0" promptText="Author" />
+      <TextField fx:id="txtTitle" disable="true" layoutX="298.0" layoutY="158.0" promptText="Title" />
+      <TextField fx:id="txtIsbn" disable="true" layoutX="137.0" layoutY="158.0" promptText="ISBN" />
     </children>
 </AnchorPane>

@@ -8,13 +8,14 @@ import javafx.scene.control.Alert;
 import javafx.scene.control.DatePicker;
 import javafx.scene.control.TextField;
 import service.custom.UserService;
+import service.impl.UserServiceImpl;
 
 import java.time.LocalDate;
 
 public class AddUserController {
 
-    @Inject
-    UserService service;
+    //@Inject
+    UserService service =new UserServiceImpl();
     @FXML
     private TextField txtMembershipDate;
     @FXML

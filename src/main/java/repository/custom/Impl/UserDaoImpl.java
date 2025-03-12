@@ -1,13 +1,17 @@
 package repository.custom.impl;
 
+import entity.BookEntity;
 import entity.UserEntity;
 import repository.custom.UserDao;
 import repository.db.DBConnection;
+import service.impl.UserServiceImpl;
 
 import java.sql.*;
+import java.util.ArrayList;
 import java.util.List;
 
 public class UserDaoImpl implements UserDao {
+
     @Override
     public boolean save(UserEntity entity) {
         String SQL = "INSERT INTO user VALUES(?,?,?,?)";
@@ -78,6 +82,27 @@ public class UserDaoImpl implements UserDao {
 
     @Override
     public List<UserEntity> getAll() {
-        return List.of();
+        ArrayList<UserEntity> userEntities = new ArrayList<>();
+
+        String SQL = "SELECT * from user";
+        try {
+            Connection connection = DBConnection.getInstance().getConnection();
+            Statement statement = connection.createStatement();
+            ResultSet resultSet = statement.executeQuery(SQL);
+
+            while (resultSet.next()) {
+                UserEntity userEntity = new UserEntity(
+                        resultSet.getString(1),
+                        resultSet.getString(2),
+                        resultSet.getString(3),
+                        resultSet.getString(4));
+                userEntities.add(userEntity);
+            }
+
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+        return userEntities;
+
     }
 }

@@ -6,13 +6,15 @@ import entity.UserEntity;
 import javafx.scene.control.Alert;
 import org.modelmapper.ModelMapper;
 import repository.custom.UserDao;
+import repository.custom.impl.UserDaoImpl;
 import service.custom.UserService;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class UserServiceImpl implements UserService {
-    @Inject
-    UserDao dao;
+    //@Inject
+    UserDao dao = new UserDaoImpl();
 
     @Override
     public boolean addUser(User user) {
@@ -47,6 +49,13 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public List<User> getAll() {
-        return List.of();
+        List<UserEntity> all = dao.getAll();
+        ArrayList<User> user = new ArrayList<>();
+
+        for (UserEntity entity:all){
+            User map = new ModelMapper().map(entity, User.class);
+            user.add(map);
+        }
+        return user;
     }
 }
