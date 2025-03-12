@@ -19,7 +19,7 @@
             <font>
                 <Font name="System Bold Italic" size="12.0" />
             </font></Button>
-        <TableView fx:id="tbCart" layoutX="31.0" layoutY="252.0" prefHeight="146.0" prefWidth="670.0">
+        <TableView fx:id="tblCart" layoutX="31.0" layoutY="252.0" prefHeight="146.0" prefWidth="670.0">
             <columns>
                 <TableColumn fx:id="colBookId" prefWidth="110.40002822875977" text="Book ID" />
                 <TableColumn fx:id="colUserId" prefWidth="150.3999481201172" text="User ID" />
@@ -49,8 +49,8 @@
             </font>
         </Label>
         <JFXTextField fx:id="txtBorrowId" layoutX="789.0" layoutY="23.0" promptText="Borrow ID" style="-fx-background-color: white;" unFocusColor="WHITE" />
-      <DatePicker fx:id="borrowedDate" layoutX="37.0" layoutY="203.0" promptText="Borrowed Date" />
-      <DatePicker fx:id="returnedDate" layoutX="240.0" layoutY="203.0" promptText="Returned Date" />
+      <DatePicker fx:id="txtBorrowedDate" layoutX="37.0" layoutY="203.0" promptText="Borrowed Date" />
+      <DatePicker fx:id="txtDewDate" layoutX="240.0" layoutY="203.0" promptText="Dew Date" />
       <TextField fx:id="txtUserName" disable="true" layoutX="137.0" layoutY="108.0" promptText="Name" />
       <TextField fx:id="txtContact" disable="true" layoutX="298.0" layoutY="108.0" promptText="Contact" />
       <TextField fx:id="txtMembershipDate" disable="true" layoutX="460.0" layoutY="108.0" promptText="Membership Date" />

@@ -3,14 +3,15 @@ package controller;
 import com.jfoenix.controls.JFXComboBox;
 import com.jfoenix.controls.JFXTextField;
 import dto.Book;
+import dto.TM.CartTM;
 import dto.User;
-import jakarta.inject.Inject;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.*;
+import javafx.scene.control.cell.PropertyValueFactory;
 import service.custom.BookService;
 import service.custom.UserService;
 import service.impl.BookServiceImpl;
@@ -21,6 +22,8 @@ import java.util.List;
 import java.util.ResourceBundle;
 
 public class BorrowController implements Initializable {
+    @FXML
+    private DatePicker txtDewDate;
     @FXML
     private TextField txtTitle;
     @FXML
@@ -47,7 +50,7 @@ public class BorrowController implements Initializable {
     //@Inject
     UserService UserService = new UserServiceImpl();
     @FXML
-    private DatePicker borrowedDate;
+    private DatePicker txtBorrowedDate;
 
     @FXML
     private JFXComboBox  cmbBookId;
@@ -74,7 +77,7 @@ public class BorrowController implements Initializable {
     private DatePicker returnedDate;
 
     @FXML
-    private TableView<?> tbCart;
+    private TableView<CartTM> tblCart;
 
     @FXML
     private JFXTextField txtBorrowId;
@@ -82,8 +85,19 @@ public class BorrowController implements Initializable {
     @FXML
     void AddToCartAction(ActionEvent event) {
 
+
+
+        String bookId = cmbBookId.getValue().toString();
+        String userId = cmbUserId.getValue().toString();
+        String borrowDate = txtBorrowedDate.getValue().toString();
+        String dewDate = txtDewDate.getValue().toString();
+
+        cartTms.add(new CartTM(bookId, userId, borrowDate, dewDate));
+        tblCart.setItems(cartTms);
+
     }
 
+    ObservableList<CartTM> cartTms = FXCollections.observableArrayList();
     @FXML
     void placeOrderAction(ActionEvent event) {
 
@@ -120,6 +134,10 @@ public class BorrowController implements Initializable {
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
+        colBookId.setCellValueFactory(new PropertyValueFactory<>("bookId"));
+        colUserId.setCellValueFactory(new PropertyValueFactory<>("userId"));
+        colBorrowDate.setCellValueFactory(new PropertyValueFactory<>("borrowDate"));
+        colReturnDate.setCellValueFactory(new PropertyValueFactory<>("dewDate"));
 
         cmbUserId.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
             if (newValue != null) {
