@@ -5,14 +5,15 @@ import dto.Book;
 import entity.BookEntity;
 import org.modelmapper.ModelMapper;
 import repository.custom.BookDao;
+import repository.custom.impl.BookDaoImpl;
 import service.custom.BookService;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class BookServiceImpl implements BookService {
-    @Inject
-    BookDao dao;
+    //@Inject
+    BookDao dao = new BookDaoImpl();
 //  DaoFactory.getInstance().getDaoType(DaoType.BOOK);
 
     @Override

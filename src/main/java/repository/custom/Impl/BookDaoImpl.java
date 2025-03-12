@@ -86,7 +86,7 @@ public class BookDaoImpl implements BookDao {
     public List<BookEntity> getAll() {
         ArrayList<BookEntity> bookEntities = new ArrayList<>();
 
-        String SQL = "SELECT *from books";
+        String SQL = "SELECT * from books";
         try {
             Connection connection = DBConnection.getInstance().getConnection();
             Statement statement = connection.createStatement();

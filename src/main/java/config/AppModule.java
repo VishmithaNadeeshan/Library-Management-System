@@ -21,8 +21,8 @@ public class AppModule extends AbstractModule {
         bind(BookDao.class).to(BookDaoImpl.class);
         bind(UserService.class).to(UserServiceImpl.class);
         bind(UserDao.class).to(UserDaoImpl.class);
-        bind(AdminDao.class).to(AdminDaoImpl.class);
         bind(AdminService.class).to(AdminServiceImpl.class);
+        bind(AdminDao.class).to(AdminDaoImpl.class);
     }
 
 }

@@ -31,19 +31,26 @@ public class RegisterController {
         String email = txtEmail.getText();
         String password = txtPassword.getText();
 
-        if (txtPassword.getText().equals(txtConfirmPassword.getText())){
-            Admin admin = new Admin(username, email, password);
-            boolean isAdminAdded = service.addAdmin(admin);
-            if (isAdminAdded) {
-                new Alert(Alert.AlertType.INFORMATION, "User ADDED").show();
+        if (!isEmpty()) {
+            if (txtPassword.getText().equals(txtConfirmPassword.getText())) {
+                Admin admin = new Admin(username, email, password);
+                boolean isAdminAdded = service.addAdmin(admin);
+                if (isAdminAdded) {
+                    new Alert(Alert.AlertType.INFORMATION, "User ADDED").show();
 
+                } else {
+                    new Alert(Alert.AlertType.INFORMATION, "User NOT ADDED").show();
+                }
             } else {
-                new Alert(Alert.AlertType.INFORMATION, "User NOT ADDED").show();
+                new Alert(Alert.AlertType.ERROR, "Check your Password").show();
             }
         }else {
-            new Alert(Alert.AlertType.ERROR,"Check your Password").show();
+            new Alert(Alert.AlertType.ERROR,"Please fill all fields").show();
         }
 
+    }
+    private boolean isEmpty(){
+        return txtUsername.getText().isEmpty() || txtEmail.getText().isEmpty() || txtPassword.getText().isEmpty() || txtConfirmPassword.getText().isEmpty();
     }
 
 }

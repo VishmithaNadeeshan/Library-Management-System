@@ -1,5 +1,6 @@
 package repository.custom.impl;
 
+import dto.Admin;
 import entity.AdminEntity;
 import javafx.scene.control.Alert;
 import repository.custom.AdminDao;
@@ -36,6 +37,24 @@ public class AdminDaoImpl implements AdminDao {
 
     @Override
     public AdminEntity search(String s) {
+        String SQL = "SELECT * FROM admins WHERE email = "+"'"+s+"'";
+        try {
+            Connection connection = DBConnection.getInstance().getConnection();
+            ResultSet resultSet = connection.createStatement().executeQuery(SQL);
+
+            if (resultSet.next()){
+                return new AdminEntity(
+                        resultSet.getString(2),
+                        resultSet.getString(3),
+                        resultSet.getString(4)
+                );
+
+            }else {
+                new Alert(Alert.AlertType.ERROR,"Admin not found").show();
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
         return null;
     }
 
