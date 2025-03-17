@@ -3,6 +3,8 @@ package controller;
 import com.jfoenix.controls.JFXComboBox;
 import com.jfoenix.controls.JFXTextField;
 import dto.Book;
+import dto.Borrow;
+import dto.BorrowDetails;
 import dto.TM.CartTM;
 import dto.User;
 import javafx.collections.FXCollections;
@@ -13,11 +15,15 @@ import javafx.fxml.Initializable;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import service.custom.BookService;
+import service.custom.BorrowService;
 import service.custom.UserService;
 import service.impl.BookServiceImpl;
+import service.impl.BorrowServiceImpl;
 import service.impl.UserServiceImpl;
+import utill.BorrowStatus;
 
 import java.net.URL;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.ResourceBundle;
 
@@ -49,6 +55,8 @@ public class BorrowController implements Initializable {
 
     //@Inject
     UserService UserService = new UserServiceImpl();
+
+    BorrowService borrowService = new BorrowServiceImpl();
     @FXML
     private DatePicker txtBorrowedDate;
 
@@ -92,15 +100,52 @@ public class BorrowController implements Initializable {
         String borrowDate = txtBorrowedDate.getValue().toString();
         String dewDate = txtDewDate.getValue().toString();
 
-        cartTms.add(new CartTM(bookId, userId, borrowDate, dewDate));
-        tblCart.setItems(cartTms);
+
+        if (cartTms.size()<3){
+            cartTms.add(new CartTM(bookId, userId, borrowDate, dewDate));
+            tblCart.setItems(cartTms);
+        }else {
+            new Alert(Alert.AlertType.ERROR,"borrow limit exceeded").show();
+        }
 
     }
 
     ObservableList<CartTM> cartTms = FXCollections.observableArrayList();
     @FXML
-    void placeOrderAction(ActionEvent event) {
+    boolean placeOrderAction(ActionEvent event) {
+        ArrayList<BorrowDetails> borrowDetails = new ArrayList<>();
 
+        String borrowId = txtBorrowId.getText();
+        String bookId = cmbBookId.getValue().toString();
+        String userId = cmbUserId.getValue().toString();
+        String borrowdate = txtBorrowedDate.getValue().toString();
+        String dewDate = txtDewDate.getValue().toString();
+
+        cartTms.forEach(cartTM -> {
+            borrowDetails.add(
+                    new BorrowDetails(
+                            borrowId,
+                            cartTM.getBookId(),
+                            cartTM.getBorrowDate(),
+                            null
+                    )
+
+
+            );
+        });
+        Borrow borrow = new Borrow(borrowId, userId, borrowdate, dewDate, BorrowStatus.BORROWED, borrowDetails);
+        boolean isPlacedOrder = borrowService.placeBorrowOrder(borrow);
+        if (isPlacedOrder) {
+            new Alert(Alert.AlertType.INFORMATION,"Borrow success").show();
+            boolean addBorrowDetails = new BorrowDetailController().addBorrowDetail(borrow.getBorrowDetails());
+
+            if (addBorrowDetails) {
+                return true;
+            }
+        }else {
+            new Alert(Alert.AlertType.ERROR,"Borrow faild").show();
+        }
+        return isPlacedOrder;
     }
 
     private void loadBookIds(){
