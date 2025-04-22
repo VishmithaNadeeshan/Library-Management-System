@@ -1,7 +1,8 @@
 package repository.custom;
 
-import entity.BorrowDetailsEntity;
+import dto.BorrowDetails;
+import entity.BorrowDetailEntity;
 import repository.CRUDRepository;
 
-public interface BorrowDetailDao extends CRUDRepository<BorrowDetailsEntity, String> {
+public interface BorrowDetailDao extends CRUDRepository<BorrowDetailEntity, String> {
 }

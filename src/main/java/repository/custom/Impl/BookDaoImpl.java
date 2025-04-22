@@ -1,8 +1,10 @@
 package repository.custom.impl;
 
 import entity.BookEntity;
+import entity.BorrowDetailEntity;
 import repository.custom.BookDao;
 import repository.db.DBConnection;
+import util.BookStatus;
 
 import java.sql.*;
 import java.util.ArrayList;
@@ -86,7 +88,7 @@ public class BookDaoImpl implements BookDao {
     public List<BookEntity> getAll() {
         ArrayList<BookEntity> bookEntities = new ArrayList<>();
 
-        String SQL = "SELECT * from books";
+        String SQL = "SELECT *from books";
         try {
             Connection connection = DBConnection.getInstance().getConnection();
             Statement statement = connection.createStatement();
@@ -107,6 +109,35 @@ public class BookDaoImpl implements BookDao {
             throw new RuntimeException(e);
         }
         return bookEntities;
+
+    }
+
+    @Override
+    public boolean updateAvailability(BorrowDetailEntity borrowDetailEntity) {
+        String SQL = "UPDATE books SET availability = ? WHERE book_id = ?";
+        try {
+            Connection connection = DBConnection.getInstance().getConnection();
+            PreparedStatement preparedStatement = connection.prepareStatement(SQL);
+            preparedStatement.setObject(1, BookStatus.NOT_AVAILABLE.toString());
+            preparedStatement.setObject(2, borrowDetailEntity.getBookId());
+            return preparedStatement.executeUpdate() > 0;
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    @Override
+    public boolean updateReturnBook(BorrowDetailEntity borrowDetailEntity) {
+        String SQL = "UPDATE books SET availability = ? WHERE book_id = ?";
+        try {
+            Connection connection = DBConnection.getInstance().getConnection();
+            PreparedStatement preparedStatement = connection.prepareStatement(SQL);
+            preparedStatement.setObject(1, BookStatus.AVAILABLE.toString());
+            preparedStatement.setObject(2, borrowDetailEntity.getBookId());
+            return preparedStatement.executeUpdate() > 0;
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
     }
 
 }

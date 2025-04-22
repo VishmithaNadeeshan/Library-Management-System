@@ -1,12 +1,11 @@
 package controller;
 
+import com.google.inject.Inject;
+import com.google.protobuf.Value;
 import com.jfoenix.controls.JFXComboBox;
 import com.jfoenix.controls.JFXTextField;
-import dto.Book;
-import dto.Borrow;
-import dto.BorrowDetails;
-import dto.TM.CartTM;
-import dto.User;
+import dto.*;
+import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -16,204 +15,193 @@ import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import service.custom.BookService;
 import service.custom.BorrowService;
-import service.custom.UserService;
+import service.custom.MemberService;
 import service.impl.BookServiceImpl;
 import service.impl.BorrowServiceImpl;
-import service.impl.UserServiceImpl;
-import utill.BorrowStatus;
+import service.impl.MemberServiceImpl;
+import util.BookStatus;
+import util.BorrowStatus;
 
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.ResourceBundle;
 
+import static org.hibernate.internal.util.StringHelper.count;
+
 public class BorrowController implements Initializable {
-    @FXML
-    private DatePicker txtDewDate;
-    @FXML
-    private TextField txtTitle;
-    @FXML
-    private TextField txtUserName;
-    @FXML
-    private TextField txtContact;
-    @FXML
-    private TextField txtMembershipDate;
-    @FXML
-    private TextField txtAvailability;
-    @FXML
-    private TextField txtGenre;
-    @FXML
-    private TextField txtAuthor;
-    @FXML
-    private TextField txtName;
-    @FXML
-    private TextField txtIsbn;
-    @FXML
+    public TableView tbCart;
+    public TableColumn colBorrowId;
+    public TableColumn colMemberId;
+    public TableColumn colBookId;
+    public TableColumn colBorrowDate;
+    public TableColumn colReturnDate;
+    public JFXTextField txtMemberName;
+    public JFXTextField txtBookName;
+    public JFXTextField txtStatus;
 
-    //@Inject
-    BookService service = new BookServiceImpl();
+    @Inject
+    MemberService service;
 
-    //@Inject
-    UserService UserService = new UserServiceImpl();
+    @Inject
+    BookService bookService;
 
-    BorrowService borrowService = new BorrowServiceImpl();
-    @FXML
-    private DatePicker txtBorrowedDate;
+    @Inject
+    BorrowService borrowService;
+
+    public JFXTextField orderId;
 
     @FXML
-    private JFXComboBox  cmbBookId;
+    private DatePicker borrowDate;
 
     @FXML
-    private JFXComboBox  cmbUserId;
+    private JFXComboBox cmbBooksId;
 
     @FXML
-    private TableColumn<?, ?> colBookId;
+    private JFXComboBox cmbMembersId;
 
     @FXML
-    private TableColumn<?, ?> colBorrowDate;
+    private DatePicker dewDate;
 
-    @FXML
-    private TableColumn<?, ?> colReturnDate;
+    public void setMemberDetails() {
+        ObservableList<String> memberObservableList = FXCollections.observableArrayList();
 
-    @FXML
-    private TableColumn<?, ?> colUserId;
+        service.getAllMembers().forEach(members -> {
+            memberObservableList.add(members.getId());
+        });
+        cmbMembersId.setItems(memberObservableList);
+    }
 
-    @FXML
-    private Label lblNetTotal;
+    public void setBookDetails() {
+        ObservableList<String> bookObservableList = FXCollections.observableArrayList();
 
-    @FXML
-    private DatePicker returnedDate;
+        bookService.getAll().forEach(books -> {
+            bookObservableList.add(books.getId());
+        });
 
-    @FXML
-    private TableView<CartTM> tblCart;
-
-    @FXML
-    private JFXTextField txtBorrowId;
-
-    @FXML
-    void AddToCartAction(ActionEvent event) {
-
-
-
-        String bookId = cmbBookId.getValue().toString();
-        String userId = cmbUserId.getValue().toString();
-        String borrowDate = txtBorrowedDate.getValue().toString();
-        String dewDate = txtDewDate.getValue().toString();
-
-
-        if (cartTms.size()<3){
-            cartTms.add(new CartTM(bookId, userId, borrowDate, dewDate));
-            tblCart.setItems(cartTms);
-        }else {
-            new Alert(Alert.AlertType.ERROR,"borrow limit exceeded").show();
-        }
+        cmbBooksId.setItems(bookObservableList);
 
     }
 
-    ObservableList<CartTM> cartTms = FXCollections.observableArrayList();
+    ObservableList<CartTM> cartTMS = FXCollections.observableArrayList();
+
     @FXML
-    boolean placeOrderAction(ActionEvent event) {
-        ArrayList<BorrowDetails> borrowDetails = new ArrayList<>();
+    void bntAddToListOnAction(ActionEvent event) {
+        String bookId = cmbBooksId.getValue().toString();
+        String borrowDay = borrowDate.getValue().toString();
+        String dewDay = dewDate.getValue().toString();
 
-        String borrowId = txtBorrowId.getText();
-        String bookId = cmbBookId.getValue().toString();
-        String userId = cmbUserId.getValue().toString();
-        String borrowdate = txtBorrowedDate.getValue().toString();
-        String dewDate = txtDewDate.getValue().toString();
+        if (txtStatus.getText().toUpperCase().equals(BookStatus.AVAILABLE.toString())) {
+            if (cartTMS.size() < 1) {
+                cartTMS.add(new CartTM(bookId, borrowDay, dewDay));
+                tbCart.setItems(cartTMS);
+                addToCart();
+            } else {
+                new Alert(Alert.AlertType.WARNING, "BORROW LIMIT EXCEEDED").show();
+            }
+        } else {
+            new Alert(Alert.AlertType.WARNING, "THIS BOOK IS CURRENTLY NOT AVAILABLE").show();
+        }
 
-        cartTms.forEach(cartTM -> {
+
+    }
+
+    public boolean placeBorrow() {
+        String orderIdText = orderId.getText();
+        String memberId = cmbMembersId.getValue().toString();
+        String borrowDay = borrowDate.getValue().toString();
+        String dewDay = dewDate.getValue().toString();
+
+        List<BorrowDetails> borrowDetails = new ArrayList<>();
+
+        cartTMS.forEach(cartTM -> {
             borrowDetails.add(
                     new BorrowDetails(
-                            borrowId,
+                            orderIdText,
                             cartTM.getBookId(),
                             cartTM.getBorrowDate(),
-                            null
+                            null,
+                            BorrowStatus.BORROWED
                     )
-
-
             );
         });
-        Borrow borrow = new Borrow(borrowId, userId, borrowdate, dewDate, BorrowStatus.BORROWED, borrowDetails);
-        boolean isPlacedOrder = borrowService.placeBorrowOrder(borrow);
-        if (isPlacedOrder) {
-            new Alert(Alert.AlertType.INFORMATION,"Borrow success").show();
-            boolean addBorrowDetails = new BorrowDetailController().addBorrowDetail(borrow.getBorrowDetails());
 
-            if (addBorrowDetails) {
-                return true;
+        Borrow borrow = new Borrow(orderIdText, memberId, borrowDay, dewDay, BorrowStatus.BORROWED, borrowDetails);
+
+        boolean placeBorrowOrder = borrowService.placeBorrowOrder(borrow);
+
+        if (placeBorrowOrder) {
+            boolean isAddBorrowDetail = new BorrowDetailController().addBorrowDetail(borrow.getBorrowedBooks());
+
+            if (isAddBorrowDetail) {
+                boolean updateAvailability = new BookServiceImpl().updateAvailability(borrow.getBorrowedBooks());
+
+                if (updateAvailability) {
+                    return true;
+                }
             }
-        }else {
-            new Alert(Alert.AlertType.ERROR,"Borrow faild").show();
         }
-        return isPlacedOrder;
-    }
-
-    private void loadBookIds(){
-        cmbBookId.setItems(setBookIds());
-    }
-
-    public void loadUserIds(){
-        cmbUserId.setItems(setUserIds());
-    }
-
-    public ObservableList<String>setBookIds(){
-        ObservableList<String> bookIds = FXCollections.observableArrayList();
-        List<Book> all = service.getAll();
-        System.out.println(all);
-        all.forEach(book -> {
-            bookIds.add(book.getId());
-        });
-        return bookIds;
+        return placeBorrowOrder;
 
     }
 
-    public ObservableList<String>setUserIds(){
-        ObservableList<String> userIds = FXCollections.observableArrayList();
-        List<User> all = UserService.getAll();
-        System.out.println(all);
-        all.forEach(user -> {
-            userIds.add(user.getId());
-        });
-        return userIds;
+    @FXML
+    void btnConfirmBorrowingOnAction(ActionEvent event) {
+        boolean isBorrow = placeBorrow();
+
+        if (isBorrow) {
+            new Alert(Alert.AlertType.INFORMATION, "BOOK ISSUED SUCCESSFULLY", ButtonType.OK).show();
+            clear();
+        } else {
+            new Alert(Alert.AlertType.INFORMATION, "UNABLE TO COMPLETE YOUR REQUEST. PLEASE TRY AGAIN", ButtonType.OK).show();
+        }
+
     }
 
-    @Override
-    public void initialize(URL url, ResourceBundle resourceBundle) {
+    public void addToCart() {
         colBookId.setCellValueFactory(new PropertyValueFactory<>("bookId"));
-        colUserId.setCellValueFactory(new PropertyValueFactory<>("userId"));
         colBorrowDate.setCellValueFactory(new PropertyValueFactory<>("borrowDate"));
         colReturnDate.setCellValueFactory(new PropertyValueFactory<>("dewDate"));
 
-        cmbUserId.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
+    }
+
+    @Override
+    public void initialize(URL location, ResourceBundle resources) {
+        setMemberDetails();
+        setBookDetails();
+
+        cmbMembersId.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
             if (newValue != null) {
-                searchUserData(newValue.toString());
+                searchMemberDetails(newValue.toString());
             }
         });
 
-        cmbBookId.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
+        cmbBooksId.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
             if (newValue != null) {
-                searchBookData(newValue.toString());
+                searchBookDetails(newValue.toString());
             }
         });
-
-        loadBookIds();
-        loadUserIds();
-
     }
 
-    public void searchBookData(String id){
-        Book book = service.searchBook(id);
-        txtIsbn.setText(book.getISBN());
-        txtTitle.setText(book.getTitle());
-        txtAuthor.setText(book.getAuthor());
-        txtGenre.setText(book.getGenre());
-        txtAvailability.setText(book.getAvailability());
+    private void searchMemberDetails(String string) {
+        Member member = service.searchMember(string);
+        txtMemberName.setText(member.getName());
     }
 
-    public void searchUserData(String id){
-        User user = UserService.searchUser(id);
-        txtUserName.setText(user.getName());
-        txtContact.setText(user.getContact());
-        txtMembershipDate.setText(user.getDate());
+    private void searchBookDetails(String string) {
+        Book book = bookService.searchBook(string);
+        txtBookName.setText(book.getTitle());
+        txtStatus.setText(book.getAvailability());
     }
+
+
+    public void clear() {
+        orderId.clear();
+        cmbMembersId.setValue(null);
+        cmbBooksId.setValue(null);
+        txtBookName.clear();
+        borrowDate.setValue(null);
+        dewDate.setValue(null);
+    }
+
 }

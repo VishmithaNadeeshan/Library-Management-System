@@ -1,11 +1,11 @@
 package service.custom;
 
 import dto.Borrow;
-import service.SuperService;
 
 import java.util.List;
 
-public interface BorrowService extends SuperService {
+public interface BorrowService {
     boolean placeBorrowOrder(Borrow borrow);
-    List<Borrow>getAll();
+    List<Borrow> getAllBorrorw();
+    boolean UpdateBorrowOrder(Borrow borrow);
 }

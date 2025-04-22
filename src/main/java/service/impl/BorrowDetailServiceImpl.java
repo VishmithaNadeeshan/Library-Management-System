@@ -1,26 +1,27 @@
 package service.impl;
 
+import com.google.inject.Inject;
 import dto.BorrowDetails;
-import entity.BorrowDetailsEntity;
-import jakarta.inject.Inject;
+import entity.BorrowDetailEntity;
 import org.modelmapper.ModelMapper;
 import repository.custom.BorrowDetailDao;
 import repository.custom.impl.BorrowDetailDaoImpl;
 import service.custom.BorrowDetailService;
-import service.custom.BorrowService;
 
 public class BorrowDetailServiceImpl implements BorrowDetailService {
+    //@Inject
+    BorrowDetailDao borrowDetailDao = new BorrowDetailDaoImpl();
 
-    BorrowDetailDao dao = new BorrowDetailDaoImpl();
     @Override
-    public boolean add(BorrowDetails borrowDetails) {
-        BorrowDetailsEntity map = new ModelMapper().map(borrowDetails, BorrowDetailsEntity.class);
-        boolean isSave = dao.save(map);
-        return isSave;
+    public boolean addBorrowDetail(BorrowDetails borrowDetails) {
+        BorrowDetailEntity map = new ModelMapper().map(borrowDetails, BorrowDetailEntity.class);
+        return borrowDetailDao.save(map);
     }
 
     @Override
-    public boolean update(BorrowDetails borrowDetails) {
-        return false;
+    public boolean updateBorrowDetail(BorrowDetails borrowDetails) {
+        BorrowDetailEntity map = new ModelMapper().map(borrowDetails, BorrowDetailEntity.class);
+        return borrowDetailDao.update(map);
     }
+
 }

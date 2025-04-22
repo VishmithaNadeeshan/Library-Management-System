@@ -9,8 +9,11 @@ import lombok.ToString;
 @AllArgsConstructor
 @NoArgsConstructor
 @ToString
-public class AdminEntity {
-    private String username;
-    private String email;
-    private String password;
+
+public class MemberEntity {
+    private String id;
+    private String name;
+    private String contactInfo;
+    private String MembershipDate;
+
 }

@@ -1,33 +1,49 @@
 package service.impl;
 
-import dto.Book;
 import dto.Borrow;
 import entity.BorrowEntity;
-import jakarta.inject.Inject;
 import org.modelmapper.ModelMapper;
 import repository.custom.BorrowDao;
 import repository.custom.impl.BorrowDaoImpl;
-import service.custom.BookService;
 import service.custom.BorrowService;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class BorrowServiceImpl implements BorrowService {
-    BorrowDao dao = new BorrowDaoImpl();
+    //@Inject
+    BorrowDao borrowDao = new BorrowDaoImpl();
 
     @Override
     public boolean placeBorrowOrder(Borrow borrow) {
         BorrowEntity map = new ModelMapper().map(borrow, BorrowEntity.class);
-        boolean isSave = dao.save(map);
-        return isSave;
+        return borrowDao.save(map);
+
+
     }
 
     @Override
-    public List<Borrow> getAll() {
+    public List<Borrow> getAllBorrorw() {
+        List<BorrowEntity> all = borrowDao.getAll();
 
-        return List.of();
+        List<Borrow> borrows = new ArrayList<>();
+
+        all.forEach(order -> {
+            Borrow map = new ModelMapper().map(all, Borrow.class);
+            borrows.add(map);
+        });
+        return borrows;
     }
 
+    @Override
+    public boolean UpdateBorrowOrder(Borrow borrow) {
+        BorrowEntity map = new ModelMapper().map(borrow, BorrowEntity.class);
+        boolean isUpdated = borrowDao.update(map);
 
+        if (isUpdated) {
+            new BookServiceImpl().updateReturnAvailability(borrow.getBorrowedBooks());
+        }
+        return false;
+    }
 
 }

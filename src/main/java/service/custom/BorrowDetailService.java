@@ -1,9 +1,9 @@
 package service.custom;
 
 import dto.BorrowDetails;
-import service.SuperService;
+import repository.CRUDRepository;
 
-public interface BorrowDetailService extends SuperService {
-    boolean add(BorrowDetails borrowDetails);
-    boolean update(BorrowDetails borrowDetails);
+public interface BorrowDetailService {
+    boolean addBorrowDetail(BorrowDetails borrowDetails);
+    boolean updateBorrowDetail(BorrowDetails borrowDetails);
 }

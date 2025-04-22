@@ -7,67 +7,34 @@
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.TableColumn?>
 <?import javafx.scene.control.TableView?>
-<?import javafx.scene.control.TextField?>
-<?import javafx.scene.effect.Blend?>
 <?import javafx.scene.layout.AnchorPane?>
-<?import javafx.scene.layout.Region?>
 <?import javafx.scene.shape.Rectangle?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane prefHeight="784.0" prefWidth="1186.0" style="-fx-background-color: #1E1E2E;" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.BorrowController">
-    <children>
-        <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#3b3b58" height="127.0" layoutY="-2.0" stroke="#405a7f" strokeType="INSIDE" width="1185.0" />
-        <Button layoutX="1026.0" layoutY="309.0" mnemonicParsing="false" onAction="#AddToCartAction" prefHeight="38.0" prefWidth="115.0" style="-fx-background-color: #20BF55;" text="Add To Cart">
-            <font>
-                <Font name="System Bold Italic" size="14.0" />
-            </font></Button>
-        <TableView fx:id="tblCart" layoutX="45.0" layoutY="405.0" prefHeight="294.0" prefWidth="1096.0" style="-fx-background-color: #405a7f;">
-            <columns>
-                <TableColumn fx:id="colBookId" prefWidth="226.39999389648438" text="Book ID" />
-                <TableColumn fx:id="colUserId" prefWidth="286.3999938964844" text="User ID" />
-                <TableColumn fx:id="colBorrowDate" prefWidth="305.5999755859375" text="Borrow Date" />
-                <TableColumn fx:id="colReturnDate" prefWidth="278.4000244140625" text="Dew Date" />
-            </columns>
-        </TableView>
-        <Label layoutX="483.0" layoutY="27.0" text="Borrow Form" textFill="WHITE">
-            <font>
-                <Font name="System Bold" size="48.0" />
-            </font>
-        </Label>
-        <Button layoutX="1026.0" layoutY="719.0" mnemonicParsing="false" onAction="#placeOrderAction" prefHeight="37.0" prefWidth="115.0" style="-fx-background-color: #D72638;" text="Place Order" textFill="WHITE">
-            <font>
-                <Font name="System Bold" size="14.0" />
-            </font></Button>
-        <Label layoutX="46.0" layoutY="738.0" text="Net Total :" textFill="#c33838">
-            <font>
-                <Font name="System Bold" size="12.0" />
-            </font>
-        </Label>
-        <Label fx:id="lblNetTotal" layoutX="112.0" layoutY="738.0" text="0.00" textFill="#c33838">
-            <font>
-                <Font name="System Bold" size="12.0" />
-            </font>
-        </Label>
-        <JFXTextField fx:id="txtBorrowId" focusColor="WHITE" layoutX="1002.0" layoutY="46.0" prefHeight="30.0" prefWidth="138.0" promptText="Borrow ID" style="-fx-background-color: #fff;" unFocusColor="WHITE">
+<AnchorPane prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.BorrowController">
+   <children>
+      <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#135b9e" height="66.0" layoutY="-2.0" stroke="BLACK" strokeType="INSIDE" width="600.0" />
+      <Button layoutX="506.0" layoutY="166.0" mnemonicParsing="false" onAction="#bntAddToListOnAction" prefHeight="25.0" prefWidth="81.0" text="Add To Cart" />
+      <TableView fx:id="tbCart" layoutX="54.0" layoutY="206.0" prefHeight="145.0" prefWidth="493.0">
+        <columns>
+            <TableColumn fx:id="colBookId" prefWidth="127.0" text="Book Id" />
+            <TableColumn fx:id="colBorrowDate" prefWidth="185.0" text="Borrow Date" />
+            <TableColumn fx:id="colReturnDate" prefWidth="185.0" text="Borrow Date" />
+        </columns>
+      </TableView>
+      <Button layoutX="465.0" layoutY="361.0" mnemonicParsing="false" onAction="#btnConfirmBorrowingOnAction" prefHeight="25.0" prefWidth="81.0" text="Place Order" />
+      <JFXComboBox fx:id="cmbMembersId" layoutX="164.0" layoutY="84.0" prefHeight="25.0" prefWidth="107.0" promptText="Member Id" />
+      <JFXComboBox fx:id="cmbBooksId" layoutX="82.0" layoutY="125.0" prefHeight="25.0" prefWidth="107.0" promptText="Book Id" />
+      <JFXTextField fx:id="orderId" layoutX="452.0" layoutY="19.0" promptText="Borrow Id" style="-fx-background-color: white;" unFocusColor="WHITE" />
+      <DatePicker fx:id="borrowDate" layoutX="55.0" layoutY="166.0" promptText="Borrow Date" />
+      <DatePicker fx:id="dewDate" layoutX="238.0" layoutY="166.0" promptText="Due Date" />
+      <JFXTextField fx:id="txtMemberName" disable="true" layoutX="301.0" layoutY="84.0" promptText="Member Name" />
+      <JFXTextField fx:id="txtBookName" layoutX="219.0" layoutY="125.0" promptText="Book Title" />
+      <JFXTextField fx:id="txtStatus" disable="true" layoutX="384.0" layoutY="125.0" promptText="Status" />
+      <Label layoutX="14.0" layoutY="9.0" text="Borrow Books" textFill="WHITE">
          <font>
-            <Font size="14.0" />
-         </font></JFXTextField>
-      <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#d72638" height="230.0" layoutX="42.0" layoutY="163.0" opacity="0.76" stroke="#cf0707" strokeType="INSIDE" width="172.0" />
-        <JFXComboBox fx:id="cmbUserId" focusColor="#f7f7f7" layoutX="49.0" layoutY="183.0" prefHeight="26.0" prefWidth="150.0" promptText="User ID" style="-fx-background-color: #F8F9FA;" unFocusColor="BLACK" />
-        <JFXComboBox fx:id="cmbBookId" focusColor="WHITE" layoutX="49.0" layoutY="245.0" prefHeight="26.0" prefWidth="150.0" promptText="Book ID" style="-fx-background-color: white;" unFocusColor="BLACK" />
-      <DatePicker fx:id="txtBorrowedDate" layoutX="49.0" layoutY="296.0" prefHeight="26.0" prefWidth="150.0" promptText="Borrowed Date" style="-fx-background-color: #F8F9FA;" />
-      <DatePicker fx:id="txtDewDate" layoutX="49.0" layoutY="347.0" prefHeight="26.0" prefWidth="150.0" promptText="Dew Date" />
-      <Region layoutX="235.0" layoutY="161.0" opacity="0.44" prefHeight="134.0" prefWidth="907.0" style="-fx-background-color: #405a7f;" />
-      <TextField fx:id="txtUserName" disable="true" layoutX="249.0" layoutY="184.0" promptText="Name" />
-      <TextField fx:id="txtContact" disable="true" layoutX="429.0" layoutY="184.0" promptText="Contact" />
-      <TextField fx:id="txtMembershipDate" disable="true" layoutX="610.0" layoutY="184.0" promptText="Membership Date" />
-      <TextField fx:id="txtGenre" disable="true" layoutX="798.0" layoutY="245.0" promptText="Genre" />
-      <TextField fx:id="txtAuthor" disable="true" layoutX="610.0" layoutY="245.0" promptText="Author" />
-      <TextField fx:id="txtTitle" disable="true" layoutX="429.0" layoutY="245.0" promptText="Title" />
-      <TextField fx:id="txtIsbn" disable="true" layoutX="249.0" layoutY="245.0" prefHeight="26.0" prefWidth="150.0" promptText="ISBN" />
-      <TextField fx:id="txtAvailability" disable="true" layoutX="984.0" layoutY="245.0" promptText="Availability" />
-    </children>
-   <effect>
-      <Blend />
-   </effect>
+            <Font name="System Bold" size="30.0" />
+         </font>
+      </Label>
+   </children>
 </AnchorPane>

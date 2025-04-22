@@ -1,52 +1,67 @@
 package controller;
 
+import com.google.inject.Guice;
+import com.google.inject.Inject;
+import com.google.inject.Injector;
+import config.AppModule;
 import javafx.event.ActionEvent;
+import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
-import javafx.scene.Parent;
 import javafx.scene.layout.AnchorPane;
+import service.custom.BookService;
 
 import java.io.IOException;
-import java.net.URL;
 
 public class DashboardController {
-    public AnchorPane loadFormContent;
+    @Inject
+    BookService service;
 
-    public void btnBookManagementOnAction(ActionEvent actionEvent) throws IOException {
-        URL resource = this.getClass().getResource("/view/book-form.fxml");
+    @FXML
+    private AnchorPane loadFormContent;
 
-        assert resource != null;
-
-       Parent load = FXMLLoader.load(resource);
-
-       loadFormContent.getChildren().clear();
-       loadFormContent.getChildren().add(load);
+    @FXML
+    void btnBookManagementOnAction(ActionEvent event) throws IOException {
+        Injector injector = Guice.createInjector(new AppModule());
+        FXMLLoader loader = new FXMLLoader(this.getClass().getResource("/view/book-form.fxml"));
+        loader.setControllerFactory(injector::getInstance);
+        this.loadFormContent.getChildren().clear();
+        this.loadFormContent.getChildren().add(loader.load());
     }
 
-    public void btnUserManagementOnAction(ActionEvent actionEvent) throws IOException {
-        URL resource = this.getClass().getResource("/view/user-form.fxml");
-
-        assert resource != null;
-
-        Parent load = FXMLLoader.load(resource);
-
-        loadFormContent.getChildren().clear();
-        loadFormContent.getChildren().add(load);
+    @FXML
+    void btnMemberManagementOnAction(ActionEvent event) throws IOException {
+        Injector injector = Guice.createInjector(new AppModule());
+        FXMLLoader loader = new FXMLLoader(this.getClass().getResource("/view/member-form.fxml"));
+        loader.setControllerFactory(injector::getInstance);
+        this.loadFormContent.getChildren().clear();
+        this.loadFormContent.getChildren().add(loader.load());
     }
 
-    public void btnBorrowAndReturnOnAction(ActionEvent actionEvent) throws IOException {
-        URL resource = this.getClass().getResource("/view/borrow-form.fxml");
-
-        assert resource != null;
-
-        Parent load = FXMLLoader.load(resource);
-
-        loadFormContent.getChildren().clear();
-        loadFormContent.getChildren().add(load);
+    @FXML
+    void btnborrowBooksOnAction(ActionEvent event) throws IOException {
+        Injector injector = Guice.createInjector(new AppModule());
+        FXMLLoader loader = new FXMLLoader(this.getClass().getResource("/view/borrow-form.fxml"));
+        loader.setControllerFactory(injector::getInstance);
+        this.loadFormContent.getChildren().clear();
+        this.loadFormContent.getChildren().add(loader.load());
     }
 
-    public void btnReportingOnAction(ActionEvent actionEvent) {
+    public void btnReturnBooksOnAction(ActionEvent actionEvent) throws IOException {
+        Injector injector = Guice.createInjector(new AppModule());
+        FXMLLoader loader = new FXMLLoader(this.getClass().getResource("/view/return-form.fxml"));
+        loader.setControllerFactory(injector::getInstance);
+        this.loadFormContent.getChildren().clear();
+        this.loadFormContent.getChildren().add(loader.load());
     }
 
-    public void btnFineManagementOnAction(ActionEvent actionEvent) {
+    public void btnFineCalculatorOnAction(ActionEvent actionEvent) throws IOException {
+        Injector injector = Guice.createInjector(new AppModule());
+        FXMLLoader loader = new FXMLLoader(this.getClass().getResource("/view/fine-form.fxml"));
+        loader.setControllerFactory(injector::getInstance);
+        this.loadFormContent.getChildren().clear();
+        this.loadFormContent.getChildren().add(loader.load());
+    }
+
+    public void btnRegisterNewUserAction(ActionEvent actionEvent) {
     }
 }

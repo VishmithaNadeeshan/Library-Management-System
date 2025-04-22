@@ -2,10 +2,8 @@ package controller;
 
 import com.google.inject.Inject;
 import com.jfoenix.controls.JFXComboBox;
-import com.jfoenix.controls.JFXTextField;
 import dto.Book;
 import javafx.collections.FXCollections;
-import javafx.collections.ObservableArray;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -15,13 +13,18 @@ import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
-import javafx.scene.layout.AnchorPane;
+//import net.sf.jasperreports.engine.*;
+//import net.sf.jasperreports.engine.design.JasperDesign;
+//import net.sf.jasperreports.engine.xml.JRXmlLoader;
+//import net.sf.jasperreports.view.JasperViewer;
+//import repository.db.DBConnection;
 import service.custom.BookService;
 
 import java.net.URL;
+import java.sql.SQLException;
 import java.util.ResourceBundle;
 
-public class AddBookController implements Initializable {
+public class BookController implements Initializable {
     public JFXComboBox cmbAvailability;
     public TableView tableBooks;
     public TableColumn colId;
@@ -29,6 +32,7 @@ public class AddBookController implements Initializable {
     public TableColumn colTitle;
     public TableColumn colAuthor;
     public TableColumn colGenre;
+    public TableColumn colAvailability;
     @Inject
     BookService service;
     @FXML
@@ -42,7 +46,7 @@ public class AddBookController implements Initializable {
     @FXML
     private TextField txtId;
 //  ServiceFactory.getInstance().getServiceType(ServiceType.BOOK);
-    
+
     @FXML
     void btnAddBookOnAction(ActionEvent event) {
         String txtIdText = txtId.getText();
@@ -60,20 +64,26 @@ public class AddBookController implements Initializable {
             if (isBookAdded) {
                 new Alert(Alert.AlertType.INFORMATION, "BOOK ADDED").show();
                 clearText();
-                loadTable();
             } else {
                 new Alert(Alert.AlertType.ERROR, "BOOK NOT ADDED").show();
                 clearText();
             }
         }
+    }
 
+    private void clearText() {
+        txtId.clear();
+        txtISBN.clear();
+        txtTitle.clear();
+        txtAuthor.clear();
+        txtGenre.clear();
     }
 
     @FXML
     void btnSearchBookOnAction(ActionEvent event) {
         Book book = service.searchBook(txtId.getText());
 
-        if (book!=null) {
+        if (book != null) {
             txtISBN.setText(book.getISBN());
             txtTitle.setText(book.getTitle());
             txtAuthor.setText(book.getAuthor());
@@ -100,7 +110,6 @@ public class AddBookController implements Initializable {
         } else {
             new Alert(Alert.AlertType.ERROR, "FAILED TO UPDATE BOOK").show();
             clearText();
-
         }
     }
 
@@ -110,9 +119,9 @@ public class AddBookController implements Initializable {
             new Alert(Alert.AlertType.INFORMATION, "BOOK DELETED SUCCESSFULLY").show();
             clearText();
         } else {
-                new Alert(Alert.AlertType.ERROR, "FAILED TO DELETE BOOK. PLEASE TRY AGAIN").show();
-                clearText();
-            }
+            new Alert(Alert.AlertType.ERROR, "FAILED TO DELETE BOOK. PLEASE TRY AGAIN").show();
+            clearText();
+        }
     }
 
     @FXML
@@ -120,18 +129,10 @@ public class AddBookController implements Initializable {
         loadTable();
     }
 
-    private void clearText() {
-        txtId.clear();
-        txtISBN.clear();
-        txtTitle.clear();
-        txtAuthor.clear();
-        txtGenre.clear();
-    }
-
     public void loadCMB() {
         ObservableList<String> observableList = FXCollections.observableArrayList();
-        observableList.add("Availabile");
-        observableList.add("Not Availability");
+        observableList.add("Available");
+        observableList.add("Not Available");
         cmbAvailability.setItems(observableList);
     }
 
@@ -140,20 +141,37 @@ public class AddBookController implements Initializable {
         loadCMB();
     }
 
-   private void loadTable() {
-       colId.setCellValueFactory(new PropertyValueFactory<>("id"));
-       colISBN.setCellValueFactory(new PropertyValueFactory<>("iSBN"));
+    private void loadTable() {
+        colId.setCellValueFactory(new PropertyValueFactory<>("id"));
+        colISBN.setCellValueFactory(new PropertyValueFactory<>("iSBN"));
         colTitle.setCellValueFactory(new PropertyValueFactory<>("title"));
-       colAuthor.setCellValueFactory(new PropertyValueFactory<>("author"));
-      colGenre.setCellValueFactory(new PropertyValueFactory<>("genre"));
+        colAuthor.setCellValueFactory(new PropertyValueFactory<>("author"));
+        colGenre.setCellValueFactory(new PropertyValueFactory<>("genre"));
+        colAvailability.setCellValueFactory(new PropertyValueFactory<>("availability"));
 
-      ObservableList<Book> booksObservable = FXCollections.observableArrayList();
+        ObservableList<Book> booksObservable = FXCollections.observableArrayList();
 
         service.getAll().forEach(book -> {
             booksObservable.add(book);
         });
 
-       tableBooks.setItems(booksObservable);
+        tableBooks.setItems(booksObservable);
     }
 
+    public void btnReloadOnAction(ActionEvent actionEvent) {
+        loadTable();
+    }
+
+//    public void btnGetBookReportOnAction(ActionEvent actionEvent) {
+//        try {
+//            JasperDesign jasperDesign = JRXmlLoader.load("src/main/resources/report/Book.jrxml");
+//            JasperReport jasperReport = JasperCompileManager.compileReport(jasperDesign);
+//
+//            JasperPrint jasperPrint = JasperFillManager.fillReport(jasperReport, null, DBConnection.getInstance().getConnection());
+//            JasperViewer.viewReport(jasperPrint, false);
+//        } catch (JRException | SQLException e) {
+//            throw new RuntimeException(e);
+//        }
+//    }
+    
 }
